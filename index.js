@@ -25,6 +25,7 @@ const run = async () => {
     await client.connect();
     const db = client.db("medzy");
     const allDoctorCollection = db.collection("all-doctor");
+    const bookingCollection = db.collection("bookings");
 
     app.get("/rated-doctors", async (req, res) => {
       const result = await allDoctorCollection
@@ -48,6 +49,12 @@ const run = async () => {
         _id: new ObjectId(id),
       });
 
+      res.send(result);
+    });
+
+    app.post("/bookings", async (req, res) => {
+      const bookingData = req.body;
+      const result = await bookingCollection.insertOne(bookingData);
       res.send(result);
     });
 
